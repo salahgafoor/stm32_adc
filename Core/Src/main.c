@@ -68,7 +68,7 @@ static void MX_ADC1_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  uint32_t adc_val;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -100,7 +100,15 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	HAL_ADC_Start(&hadc1); // start the adc
 
+	HAL_ADC_PollForConversion(&hadc1, 100); // poll for conversion
+
+	adc_val = HAL_ADC_GetValue(&hadc1); // get the adc value
+
+	HAL_ADC_Stop(&hadc1); // stop adc
+
+	HAL_Delay (500);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
