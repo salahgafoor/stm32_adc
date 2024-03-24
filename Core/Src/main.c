@@ -35,7 +35,8 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+#define ADC_RESOLUTION_BITS 1024		// 10 bit resolution, thus 2^10 bits
+#define FULL_SCALE_MEASUREMENT 10330 	// 10kOhm
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -68,7 +69,7 @@ static void MX_ADC1_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  uint32_t adc_val;
+  uint32_t adc_val, resistance_val;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -100,16 +101,19 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
 	HAL_ADC_Start(&hadc1); // start the adc
 
 	HAL_ADC_PollForConversion(&hadc1, 100); // poll for conversion
 
 	adc_val = HAL_ADC_GetValue(&hadc1); // get the adc value
 
+	resistance_val = (FULL_SCALE_MEASUREMENT *adc_val /ADC_RESOLUTION_BITS);
+
 	HAL_ADC_Stop(&hadc1); // stop adc
 
 	HAL_Delay (500);
-    /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
 }
